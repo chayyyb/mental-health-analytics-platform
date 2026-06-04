@@ -1,0 +1,14 @@
+Patient_ID,Age,Gender,Stress_Level,Anxiety,Depression,Sleep_Hours,Work_Hours,Physical_Activity,Treatment
+1,22,Female,7,1,0,5.5,42,2,Yes
+2,35,Male,5,0,0,7.0,40,4,No
+3,29,Female,8,1,1,4.8,55,1,Yes
+4,41,Male,4,0,0,7.2,38,3,No
+5,31,Female,6,1,0,6.1,46,2,Yes
+6,26,Male,9,1,1,4.5,60,0,Yes
+7,48,Female,3,0,0,7.8,35,5,No
+8,39,Male,6,0,1,6.0,50,2,No
+9,24,Female,8,1,1,5.0,52,1,Yes
+10,52,Male,4,0,0,7.5,36,4,No
+11,33,Female,7,1,0,5.8,44,2,Yes
+12,45,Male,5,0,0,6.7,41,3,No
+
