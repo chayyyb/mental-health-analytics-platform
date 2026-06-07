@@ -2,7 +2,9 @@
 
 from __future__ import annotations
 
+import os
 from dataclasses import dataclass
+from pathlib import Path
 from typing import Iterable
 
 import pandas as pd
@@ -51,34 +53,38 @@ def setup_page(title: str) -> None:
     st.markdown(
         f"""
         <style>
-        :root {
+        :root {{
             --primary: #1769aa;
             --accent: #00a896;
             --soft: {soft};
             --text: {text};
-        }
+        }}
         .stApp {{background: {background}; color: {text};}}
-        .main .block-container {padding-top: 1.6rem; padding-bottom: 2rem;}
-        [data-testid="stSidebar"] {background: linear-gradient(180deg, #0f4c81 0%, #1769aa 100%);}
-        [data-testid="stSidebar"] * {color: white;}
-        .kpi-card {
+        header {{visibility: hidden;}}
+        #MainMenu {{visibility: hidden;}}
+        .stDeployButton {{display: none;}}
+        [data-testid="stStatusWidget"] {{display: none;}}
+        .main .block-container {{padding-top: 1.6rem; padding-bottom: 2rem;}}
+        [data-testid="stSidebar"] {{background: linear-gradient(180deg, #0f4c81 0%, #1769aa 100%);}}
+        [data-testid="stSidebar"] * {{color: white;}}
+        .kpi-card {{
             background: {panel};
             border: 1px solid {border};
             border-radius: 8px;
             padding: 1rem;
             min-height: 112px;
             box-shadow: 0 8px 24px rgba(15, 76, 129, .08);
-        }
-        .kpi-label {color: #7ba7c7; font-size: .82rem; font-weight: 700; text-transform: uppercase;}
-        .kpi-value {color: #37b6ff; font-size: 1.75rem; font-weight: 800; margin-top: .35rem;}
-        .info-band {
+        }}
+        .kpi-label {{color: #7ba7c7; font-size: .82rem; font-weight: 700; text-transform: uppercase;}}
+        .kpi-value {{color: #37b6ff; font-size: 1.75rem; font-weight: 800; margin-top: .35rem;}}
+        .info-band {{
             background: {soft};
             border-left: 4px solid #1769aa;
             border-radius: 8px;
             padding: 1rem;
             color: {text};
-        }
-        .section-title {font-size: 1.25rem; font-weight: 800; color: #37b6ff; margin-top: 1rem;}
+        }}
+        .section-title {{font-size: 1.25rem; font-weight: 800; color: #37b6ff; margin-top: 1rem;}}
         </style>
         """,
         unsafe_allow_html=True,
@@ -98,6 +104,15 @@ def init_session() -> None:
     }
     for key, value in defaults.items():
         st.session_state.setdefault(key, value)
+
+    if os.environ.get("MENTAL_HEALTH_DEMO") == "1" and st.session_state.df_original is None:
+        demo_path = Path(__file__).resolve().parents[1] / "data" / "exemple_sante_mentale.csv"
+        if demo_path.exists():
+            demo_df = pd.read_csv(demo_path)
+            st.session_state.df_original = demo_df.copy()
+            st.session_state.df_clean = demo_df.copy()
+            st.session_state.file_name = demo_path.name
+            st.session_state.history = ["Chargement automatique du dataset d'exemple pour la démonstration"]
 
 
 def get_active_df(clean: bool = True) -> pd.DataFrame | None:
